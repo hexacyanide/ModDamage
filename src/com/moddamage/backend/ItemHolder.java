@@ -11,7 +11,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import com.moddamage.magic.MagicStuff;
 
-
 public class ItemHolder {
     private ItemStack item;
 
@@ -25,7 +24,7 @@ public class ItemHolder {
 
     protected void setItem(ItemStack item) {
         this.item = item;
-    	
+
     	save();
     }
 
@@ -37,31 +36,35 @@ public class ItemHolder {
     public void setType(Material material) {
     	if (item == null) item = new ItemStack(material);
     	else item.setType(material);
-    	
+
     	save();
     }
 
+    @SuppressWarnings("deprecation")
     public int getTypeId() {
     	if (item == null) return 0;
     	else return item.getTypeId();
     }
 
+    @SuppressWarnings("deprecation")
     public void setTypeId(int type) {
     	if (item == null) item = new ItemStack(type);
     	else item.setTypeId(type);
-    	
+
     	save();
     }
 
+    @SuppressWarnings("deprecation")
     public byte getData() {
     	if (item == null) return 0;
     	else return item.getData().getData();
     }
 
+    @SuppressWarnings("deprecation")
     public void setData(byte data) {
-    	if (item == null) item = new ItemStack(1);
+    	if (item == null) item = new ItemStack(Material.STONE);
         item.getData().setData(data);
-    	
+
     	save();
     }
 
@@ -71,9 +74,9 @@ public class ItemHolder {
     }
 
     public void setDurability(short durability) {
-    	if (item == null) item = new ItemStack(1);
+    	if (item == null) item = new ItemStack(Material.STONE);
         item.setDurability(durability);
-    	
+
     	save();
     }
 
@@ -88,9 +91,9 @@ public class ItemHolder {
     }
 
     public void setAmount(int amount) {
-    	if (item == null) item = new ItemStack(1);
+    	if (item == null) item = new ItemStack(Material.STONE);
         item.setAmount(amount);
-    	
+
     	save();
     }
 
@@ -98,7 +101,7 @@ public class ItemHolder {
     	if (item == null) return 0;
         return item.getMaxStackSize();
     }
-    
+
     public boolean isEnchanted() {
     	if (item == null) return false;
     	return !item.getEnchantments().isEmpty();
@@ -110,9 +113,9 @@ public class ItemHolder {
     }
 
     public void setEnchantmentLevel(Enchantment enchantment, int level) {
-    	if (item == null) item = new ItemStack(1);
+    	if (item == null) item = new ItemStack(Material.STONE);
         item.addUnsafeEnchantment(enchantment, level);
-    	
+
     	save();
     }
 
@@ -121,50 +124,50 @@ public class ItemHolder {
         for (Enchantment enchantment : item.getEnchantments().keySet()) {
             item.removeEnchantment(enchantment);
         }
-    	
+
     	save();
     }
-    
+
     /// Meta info ///
-    
+
     public String getName() {
     	if (item == null) return null;
     	ItemMeta meta = item.getItemMeta();
     	if (meta == null) return null;
-    	
+
     	return meta.getDisplayName();
     }
-    
+
     public void setName(String name) {
-    	if (item == null) item = new ItemStack(1);
+    	if (item == null) item = new ItemStack(Material.STONE);
     	ItemMeta meta = item.getItemMeta();
     	if (meta == null) return;
-    	
+
     	meta.setDisplayName(name);
     	item.setItemMeta(meta);
-    	
+
     	save();
     }
-    
+
     public String getLore(int index) {
     	if (item == null) return null;
     	ItemMeta meta = item.getItemMeta();
     	if (meta == null) return null;
     	List<String> lore = meta.getLore();
     	if (lore == null || index < 0 || index >= lore.size()) return null;
-    	
+
     	return lore.get(index);
     }
-    
+
     public void setLore(int index, String text) {
-    	if (item == null) item = new ItemStack(1);
+    	if (item == null) item = new ItemStack(Material.STONE);
     	ItemMeta meta = item.getItemMeta();
     	if (meta == null) return;
 
     	List<String> lore = meta.getLore();
     	if (lore == null) lore = new ArrayList<String>(1);
     	if (index < 0 || index > lore.size()) return;
-    	
+
     	if (text == null || text.equals("")) {
     		if (index >= 0 && index < lore.size())
     			lore.remove(index);
@@ -175,37 +178,38 @@ public class ItemHolder {
 
     	meta.setLore(lore);
     	item.setItemMeta(meta);
-    	
+
     	save();
     }
-    
-    
+
+
     public String getOwner() {
     	if (item == null) return null;
     	ItemMeta meta = item.getItemMeta();
     	if (meta == null || !(meta instanceof SkullMeta)) return null;
-    	
+
     	SkullMeta smeta = (SkullMeta) meta;
-    	
+
     	return smeta.getOwner();
     }
-    
+
     public void setOwner(String name) {
     	if (item == null) return;
     	ItemMeta meta = item.getItemMeta();
     	if (meta == null || !(meta instanceof SkullMeta)) return;
-    	
+
     	SkullMeta smeta = (SkullMeta) meta;
-    	
+
     	smeta.setOwner(name);
     	item.setItemMeta(smeta);
-    	
+
     	save();
     }
-    
+
 
     public void save() {}
-    
+
+    @Override
     public String toString() {
     	if (item == null)
     		return "none";

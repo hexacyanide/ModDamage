@@ -61,13 +61,13 @@ public enum EntityType implements Matchable<EntityType>
 							return wolf;
 						}
 					},
-				
+
 			HUMAN(LIVING, HumanEntity.class),
 				PLAYER(HUMAN, org.bukkit.entity.EntityType.PLAYER, Player.class),
 				NPC(HUMAN, NPC.class),
 					IRONGOLEM(NPC, org.bukkit.entity.EntityType.IRON_GOLEM, IronGolem.class),
 					VILLAGER(NPC, org.bukkit.entity.EntityType.VILLAGER, Villager.class),
-			
+
 			MOB(LIVING, Monster.class),
 				BLAZE(MOB, org.bukkit.entity.EntityType.BLAZE, Blaze.class),
 				CAVESPIDER(MOB, org.bukkit.entity.EntityType.CAVE_SPIDER, CaveSpider.class),
@@ -241,7 +241,7 @@ public enum EntityType implements Matchable<EntityType>
                 WITCH(MOB, org.bukkit.entity.EntityType.WITCH, Witch.class),
                 WITHER(MOB, org.bukkit.entity.EntityType.WITHER, Wither.class),
 			SNOWMAN(LIVING, org.bukkit.entity.EntityType.SNOWMAN, Snowman.class),
-		
+
 		NONLIVING(ENTITY),
 			PROJECTILE(NONLIVING, Projectile.class),
 				ARROW(PROJECTILE, org.bukkit.entity.EntityType.ARROW,  Arrow.class),
@@ -250,18 +250,18 @@ public enum EntityType implements Matchable<EntityType>
                 EXPBOTTLE(PROJECTILE, org.bukkit.entity.EntityType.THROWN_EXP_BOTTLE, ThrownExpBottle.class),
 				FIREBALL(PROJECTILE, org.bukkit.entity.EntityType.FIREBALL, Fireball.class),
 					FIREBALL_SMALL(FIREBALL, org.bukkit.entity.EntityType.SMALL_FIREBALL, SmallFireball.class),
-				FISHINGROD(PROJECTILE, org.bukkit.entity.EntityType.FISHING_HOOK, Fish.class),
+				FISHINGROD(PROJECTILE, org.bukkit.entity.EntityType.FISHING_HOOK, FishHook.class),
 				POTION(PROJECTILE, org.bukkit.entity.EntityType.SPLASH_POTION, ThrownPotion.class),
 				SNOWBALL(PROJECTILE, org.bukkit.entity.EntityType.SNOWBALL, Snowball.class),
                 WITHER_SKULL(PROJECTILE, org.bukkit.entity.EntityType.WITHER_SKULL, WitherSkull.class),
-			
+
 			TRAP(NONLIVING),
 				DISPENSER(TRAP),
-				
+
 			VEHICLE(NONLIVING, Vehicle.class),
 				BOAT(NONLIVING, org.bukkit.entity.EntityType.BOAT, Boat.class),
 				MINECART(NONLIVING, org.bukkit.entity.EntityType.MINECART, Minecart.class),
-				
+
 			ENDERSIGNAL(NONLIVING, org.bukkit.entity.EntityType.ENDER_SIGNAL, EnderSignal.class),
 			EXPERIENCEORB(NONLIVING, org.bukkit.entity.EntityType.EXPERIENCE_ORB, ExperienceOrb.class),
 			FALLINGBLOCK(NONLIVING, org.bukkit.entity.EntityType.FALLING_BLOCK, FallingBlock.class),
@@ -269,9 +269,9 @@ public enum EntityType implements Matchable<EntityType>
             ITEM_FRAME(NONLIVING, org.bukkit.entity.EntityType.ITEM_FRAME, ItemFrame.class),
 			PAINTING(NONLIVING, org.bukkit.entity.EntityType.PAINTING, Painting.class),
 			TNTPRIMED(NONLIVING, org.bukkit.entity.EntityType.PRIMED_TNT, TNTPrimed.class);
-	
+
 	private static Map<Class<?>, EntityType> byClass = new HashMap<Class<?>, EntityType>();
-	
+
 	static {
 		for (EntityType element : EntityType.values())
 		{
@@ -287,22 +287,20 @@ public enum EntityType implements Matchable<EntityType>
 	public static final int SIZE_LARGE = 2;
 	public static final int SIZE_MEDIUM = 1;
 	public static final int SIZE_SMALL = 0;
-	
-	
-	
+
 	private final EntityType parent;
 	protected final org.bukkit.entity.EntityType creatureType;
 	public final Class<?> myClass;
-	
-	EntityType(EntityType parent) 
+
+	EntityType(EntityType parent)
 	{
 		this(parent, null, null);
 	}
-	EntityType(EntityType parent, Class<?> myClass) 
+	EntityType(EntityType parent, Class<?> myClass)
 	{
 		this(parent, null, myClass);
 	}
-	EntityType(EntityType parent, org.bukkit.entity.EntityType creatureType) 
+	EntityType(EntityType parent, org.bukkit.entity.EntityType creatureType)
 	{
 		this(parent, creatureType, null);
 	}
@@ -313,16 +311,17 @@ public enum EntityType implements Matchable<EntityType>
 		this.myClass = myClass;
 	}
 
-	
-	public org.bukkit.entity.EntityType getCreatureType(){ return creatureType; }
-	
+
+	public org.bukkit.entity.EntityType getCreatureType() { return creatureType; }
+
 	//Returns true if this is equals or a subtype of the inputted element
-	public boolean matches(Matchable<?> other)
+	@Override
+    public boolean matches(Matchable<?> other)
 	{
 		if (other == null || !(other instanceof EntityType)) return false;
 		EntityType type = (EntityType)other;
-		
-		
+
+
 		EntityType temp = this;
 		while (temp != null)
 		{
@@ -331,31 +330,31 @@ public enum EntityType implements Matchable<EntityType>
 		}
 		return false;
 	}
-	
+
 	protected EntityType getMostSpecificType(Object obj)
 	{
 		return this;
 	}
-	
+
 	public static EntityType get(Object obj)
 	{
-		if(obj == null) return NONE; //throw new IllegalArgumentException("Object cannot be null for EntityType.get method!");
+		if (obj == null) return NONE; //throw new IllegalArgumentException("Object cannot be null for EntityType.get method!");
 		Class<?> cls = obj.getClass();
 		EntityType mde = byClass.get(cls);
 		if (mde == null)
 		{
 			mde = EntityType.matchByInterfaces(Arrays.asList(cls.getInterfaces()));
-			if (mde != null) 
+			if (mde != null)
 				byClass.put(cls, mde);
 		}
 		if (mde != null) return mde.getMostSpecificType(obj);
-		
+
 		ModDamage.printToLog(Level.WARNING, "Uncaught mob type " + obj.getClass().getName() + "!");
 		byClass.put(cls, UNKNOWN);
 		return UNKNOWN;
 	}
 
-	
+
 	public static EntityType getElementNamed(String string)
 	{
 		try
@@ -364,7 +363,7 @@ public enum EntityType implements Matchable<EntityType>
 		} catch (IllegalArgumentException e) { }
 		return null;
 	}
-	
+
 	private static EntityType matchByInterfaces(List<Class<?>> interfaces)
 	{
 		while (interfaces.size() > 0)
@@ -374,20 +373,20 @@ public enum EntityType implements Matchable<EntityType>
 				EntityType mde = byClass.get(cls);
 				if (mde != null) return mde;
 			}
-			
+
 			List<Class<?>> nextInterfaces = new ArrayList<Class<?>>();
 			for (Class<?> cls : interfaces)
 				nextInterfaces.addAll(Arrays.asList(cls.getInterfaces()));
 			interfaces = nextInterfaces;
 		}
-		
+
 		return null;
 	}
-	
-	public boolean canSpawn(){ return creatureType != null && creatureType.isSpawnable(); }
+
+	public boolean canSpawn() { return creatureType != null && creatureType.isSpawnable(); }
 	public LivingEntity spawn(Location location)
 	{
-		if(creatureType != null)
+		if (creatureType != null)
 			return (LivingEntity) location.getWorld().spawnEntity(location, creatureType);
 		else throw new IllegalArgumentException("Cannot spawn " + name() + "!");
 	}
