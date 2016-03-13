@@ -54,7 +54,7 @@ SOFTWARE.
  * <p>
  * This can sometimes be easier than using a JSONObject to build a string.
  * @author JSON.org
- * @version 2011-11-24
+ * @version 2015-12-09
  */
 public class JSONWriter {
     private static final int maxdepth = 200;
@@ -269,7 +269,7 @@ public class JSONWriter {
 
     /**
      * Push an array or object scope.
-     * @param c The scope to open.
+     * @param jo The scope to open.
      * @throws JSONException If nesting is too deep.
      */
     private void push(JSONObject jo) throws JSONException {
