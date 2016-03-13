@@ -1,5 +1,8 @@
 package com.moddamage.properties;
 
+import java.util.Set;
+
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Creature;
@@ -47,47 +50,53 @@ public class EntityProps
         Properties.register("velocity", Entity.class, "getVelocity", "setVelocity");
 
         Properties.register(new SettableProperty<Double, Damageable>("health", Double.class, Damageable.class) {
+                @Override
                 public Double get(Damageable entity, EventData data) {
                     return entity.getHealth();
                 }
 
-				public void set(Damageable entity, EventData data, Double value) throws BailException
+				@Override
+                public void set(Damageable entity, EventData data, Double value) throws BailException
 				{
 					if (value != null) entity.setHealth(Math.min(value, entity.getMaxHealth()));
 				}
             });
 
         Properties.register(new Property<EntityType, Entity>("type", EntityType.class, Entity.class) {
+                @Override
                 public EntityType get(Entity entity, EventData data) {
                     return EntityType.get(entity);
                 }
             });
 
         Properties.register(new Property<Block, LivingEntity>("blocktarget", Block.class, LivingEntity.class) {
+            @Override
             public Block get(LivingEntity entity, EventData data) {
-                return entity.getTargetBlock(null, 100);
+                Set<Material> transparent = null;
+                return entity.getTargetBlock(transparent, 100);
             }
         });
-        
+
         DataProvider.registerTransformer(Tameable.class, Entity.class);
         DataProvider.registerTransformer(Player.class, AnimalTamer.class);
-        
+
         Properties.register("isTamed", Tameable.class, "isTamed", "setTamed");
-        
-        
+
+
         DataProvider.registerTransformer(Colorable.class, Entity.class);
         Properties.register("color", Colorable.class, "getColor", "setColor");
-        
+
         DataProvider.registerTransformer(InventoryHolder.class, Entity.class);
 		DataProvider.registerTransformer(LivingEntity.class, ProjectileSource.class);
 
         registerRawTypes();
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	private static void registerRawTypes()
 	{
         Properties.register(new Property<Class, Entity>("handleClass", Class.class, Entity.class) {
+                @Override
                 public Class<?> get(Entity entity, EventData data) {
                     return MagicStuff.getHandleClass(entity);
                 }
