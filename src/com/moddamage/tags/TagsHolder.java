@@ -43,7 +43,7 @@ public final class TagsHolder<T>
 
         saveMap.put("location", onLocation.save(entities));
         saveMap.put("entity", onEntity.save(entities));
-        saveMap.put("player", onPlayer.save(entities));
+        saveMap.put("player", onPlayer.save(null));
         saveMap.put("world", onWorld.save(entities));
         saveMap.put("chunk", onChunk.save(entities));
 
