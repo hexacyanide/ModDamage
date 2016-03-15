@@ -222,15 +222,15 @@ public class NanoHTTPD
 	{
 		this( new ServerSocket( port ), wwwroot );
 	}
-	
+
 	public NanoHTTPD( ServerSocket socket, File wwwroot ) throws IOException
 	{
-		myTcpPort = socket.getLocalPort();
 		this.myRootDir = wwwroot;
 		myServerSocket = socket;
 		myThread = new Thread( new Runnable()
 			{
-				public void run()
+				@Override
+                public void run()
 				{
 					try
 					{
@@ -314,7 +314,8 @@ public class NanoHTTPD
 			t.start();
 		}
 
-		public void run()
+		@Override
+        public void run()
 		{
 			try
 			{
@@ -353,7 +354,7 @@ public class NanoHTTPD
 				decodeHeader(hin, pre, parms, header);
 				String method = pre.getProperty("method");
 				String uri = pre.getProperty("uri");
-				
+
 				if (method == null || uri == null) return;
 
 				long size = 0x7FFFFFFFFFFFFFFFl;
@@ -855,7 +856,6 @@ public class NanoHTTPD
 		return newUri;
 	}
 
-	private int myTcpPort;
 	private final ServerSocket myServerSocket;
 	private Thread myThread;
 	private File myRootDir;
@@ -1031,73 +1031,74 @@ public class NanoHTTPD
 						final long dataLen = newLen;
 						FileInputStream fis = new FileInputStream( f ) {
 							int dataSoFar;
-							
+
 							@Override
 							public boolean markSupported()
 							{
 								return false;
 							}
-							
+
 							@Override
 							public synchronized void mark(int readlimit)
 							{
 							}
-							
+
 							@Override
 							public synchronized void reset() throws IOException
 							{
 								throw new IOException();
 							}
-							
-							
-							
-							public int available() throws IOException {
+
+
+
+							@Override
+                            public int available() throws IOException {
 								return (int) Math.min(dataLen - dataSoFar, super.available());
 							}
-							
+
 							@Override
 							public int read() throws IOException
 							{
 								if (dataSoFar >= dataLen) return -1;
-								
+
 								int b = super.read();
-								
+
 								dataSoFar += 1;
-								
+
 								return b;
 							}
-							
+
 							@Override
 							public int read(byte[] b) throws IOException
 							{
 								if (dataSoFar >= dataLen) return -1;
-								
+
 								int readLen;
-								
+
 								if (b.length > dataLen - dataSoFar)
 									readLen = super.read(b, 0, (int) (dataLen - dataSoFar));
 								else
 									readLen = super.read(b);
-								
+
 								dataSoFar += readLen;
-								
+
 								return readLen;
 							}
-							
+
 							@Override
 							public int read(byte[] b, int off, int len) throws IOException
 							{
 								if (dataSoFar >= dataLen) return -1;
-								
+
 								int readLen;
-								
+
 								if (len > dataLen - dataSoFar)
 									readLen = super.read(b, off, (int) (dataLen - dataSoFar));
 								else
 									readLen = super.read(b, off, len);
-								
+
 								dataSoFar += readLen;
-								
+
 								return readLen;
 							}
 						};
@@ -1170,7 +1171,7 @@ public class NanoHTTPD
 	private static int theBufferSize = 16 * 1024;
 
 	// Change these if you want to log to somewhere else than stdout
-	protected static PrintStream myOut = System.out; 
+	protected static PrintStream myOut = System.out;
 	protected static PrintStream myErr = System.err;
 
 	/**

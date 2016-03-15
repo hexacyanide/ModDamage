@@ -1,6 +1,6 @@
 name: ModDamage
 main: com.moddamage.ModDamage
-version: 1.0.0
+version: 1.1.0
 authors: [KoryuObihiro, ricochet1k, Spudstabber]
 description: |
     Completely customize damage in Bukkit with ModDamage!
