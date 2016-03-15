@@ -12,23 +12,25 @@ import com.moddamage.eventinfo.EventInfo;
 import com.moddamage.eventinfo.SimpleEventInfo;
 
 public class HorseJump extends MDEvent {
-	
+
 	public HorseJump() { super(myInfo); }
-	
+
 	static EventInfo myInfo = new SimpleEventInfo(
 			Horse.class, "horse",
 			Double.class, "power", "-default",
 			Boolean.class, "cancelled");
 
-	@EventHandler(priority=EventPriority.HIGHEST)
+	@SuppressWarnings("deprecation")
+    @EventHandler(priority=EventPriority.HIGHEST)
 	public void onHorseJump(HorseJumpEvent event)
 	{
 		if(!ModDamage.isEnabled || event.isCancelled()) return;
-		
+
 		EventData data = myInfo.makeData(event.getEntity(), event.getPower(), event.isCancelled());
-		
+
 		runRoutines(data);
-		
+
+		// both of these properties are client side in 1.9+ and no longer work on the server
 		event.setCancelled(data.get(Boolean.class, data.start + data.objects.length - 1));
 		event.setPower(data.get(Double.class, data.start + 1).floatValue());
 	}

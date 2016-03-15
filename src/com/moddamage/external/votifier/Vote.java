@@ -18,7 +18,7 @@ public class Vote extends MDEvent
 	{
 		super(myInfo);
 	}
-	
+
 	static final EventInfo myInfo = new SimpleEventInfo(
 			String.class, "address",
 			String.class, "serviceName",
@@ -26,31 +26,32 @@ public class Vote extends MDEvent
 			OfflinePlayer.class, "player",
 			String.class, "timestamp"
 			);
-	
+
 	@EventHandler(priority= EventPriority.HIGHEST)
 	public void onVote(VotifierEvent event)
 	{
 		com.vexsoftware.votifier.model.Vote vote = event.getVote();
 
 		if(!ModDamage.isEnabled || vote == null) return;
-		
-		EventData data = myInfo.makeData(
+
+		@SuppressWarnings("deprecation")
+        EventData data = myInfo.makeData(
 				vote.getAddress(),
 				vote.getServiceName(),
 				vote.getUsername(),
 				Bukkit.getServer().getOfflinePlayer(vote.getUsername()),
 				vote.getTimeStamp()
 				);
-		
+
 		if (data != null)
 		{
 			runRoutines(data);
-			
+
 			vote.setAddress(data.get(String.class, data.start));
 			vote.setServiceName(data.get(String.class, data.start + 1));
 			vote.setUsername(data.get(String.class, data.start + 2));
 			vote.setTimeStamp(data.get(String.class, data.start + 3));
 		}
 	}
-	
+
 }

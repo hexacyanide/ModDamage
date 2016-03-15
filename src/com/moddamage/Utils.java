@@ -28,7 +28,8 @@ public final class Utils
 		return sb.toString();
 	}
 
-	public static <T> String joinBy(String sep, T... objs)
+	@SafeVarargs
+    public static <T> String joinBy(String sep, T... objs)
 	{
 		if (objs.length == 0) return "";
 
@@ -45,7 +46,8 @@ public final class Utils
 		return sb.toString();
 	}
 
-	public static <T> String join(T... objs)
+	@SafeVarargs
+    public static <T> String join(T... objs)
 	{
 		if (objs.length == 0) return "";
 
@@ -80,31 +82,31 @@ public final class Utils
 	{
 		return cls == Float.class || cls == Double.class;
 	}
-	
+
 	public static boolean isFloating(Number num)
 	{
 		return isFloating(num.getClass());
 	}
-	
+
 
 	private static Map<Class<?>, Map<String, Enum<?>>> enumMap = new HashMap<Class<?>, Map<String, Enum<?>>>();
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Enum<T>> Map<String, T> getTypeMapForEnum(Class<T> cls, boolean uppercase)
 	{
-		if (enumMap.containsKey(cls)) return (Map<String, T>) (Object) enumMap.get(cls);
-		
+		if (enumMap.containsKey(cls)) return (Map<String, T>) enumMap.get(cls);
+
 		Map<String, T> map = new HashMap<String, T>();
-		
+
 		Method valuesMethod;
 		@SuppressWarnings("rawtypes")
 		Enum[] values;
-		
+
 		try
 		{
 			valuesMethod = cls.getMethod("values");
 			values = (Enum[]) valuesMethod.invoke(null);
-			
+
 			for (Enum<?> value : values)
 				map.put(uppercase? value.name().toUpperCase() : value.name(), (T) value);
 		}
@@ -113,9 +115,9 @@ public final class Utils
 		catch (IllegalArgumentException e) { e.printStackTrace(); }
 		catch (IllegalAccessException e) { e.printStackTrace(); }
 		catch (InvocationTargetException e) { e.printStackTrace(); }
-		
-		
-		enumMap.put(cls, (Map<String, Enum<?>>) (Object) map);
+
+
+		enumMap.put(cls, (Map<String, Enum<?>>) map);
 		return map;
 	}
 }
