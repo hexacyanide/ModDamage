@@ -24,9 +24,9 @@ public class CBGroundBlock implements IMagicGroundBlock
 
 		Class<?> NMSEntityArrow = MagicStuff.safeClassForName(MagicStuff.nms + ".EntityArrow");
 		NMSEntityArrow_inGround = MagicStuff.safeGetField(NMSEntityArrow, "inGround");
-		NMSEntityArrow_x = MagicStuff.safeGetField(NMSEntityArrow, "h");
-		NMSEntityArrow_y = MagicStuff.safeGetField(NMSEntityArrow, "as");
-		NMSEntityArrow_z = MagicStuff.safeGetField(NMSEntityArrow, "at");
+		NMSEntityArrow_x = MagicStuff.safeGetField(NMSEntityArrow, "tileX");
+		NMSEntityArrow_y = MagicStuff.safeGetField(NMSEntityArrow, "tileY");
+		NMSEntityArrow_z = MagicStuff.safeGetField(NMSEntityArrow, "tileZ");
 	}
 
 	@Override

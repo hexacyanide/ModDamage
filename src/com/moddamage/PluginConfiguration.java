@@ -449,8 +449,8 @@ public class PluginConfiguration implements ScriptLineHandler
 			{
 				case Material:
 					String[][] toolAliases = {
-							{ "axe", "hoe", "pickaxe", "spade", "sword" },
-							{ "WOOD_", "STONE_", "IRON_", "GOLD_", "DIAMOND_" } };
+							{ "axe", "hoe", "pickaxe", "shovel", "sword" },
+							{ "WOODEN_", "STONE_", "IRON_", "GOLDEN_", "DIAMOND_" } };
 					for(String toolType : toolAliases[0])
 					{
 						outputString += newline + "\t\t" + toolType + "";
