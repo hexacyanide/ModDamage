@@ -352,7 +352,7 @@ public class ModDamage extends JavaPlugin
 
 	public static PluginConfiguration getPluginConfiguration(){ return configuration; }
 
-	// TODO(esu): Remove deprecated materials for versions past 1.13.
+	// TODO(esu): Auto-generate this from using Material.isSolid().
 	public static final HashSet<Material> goThroughThese = new HashSet<>(Arrays.asList(
 			Material.AIR,
 			Material.GLASS,
