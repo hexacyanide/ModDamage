@@ -9,3 +9,5 @@ commands:
     aliases: [md]
     description: "Basic ModDamage control"
 softdepend: [Multiverse-Core, elRegions, WorldGuard, bPermissions, PermissionsBukkit, PermissionsEx, mcMMO, Vault, Votifier]
+
+api-version: 1.13
