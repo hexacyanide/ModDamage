@@ -330,7 +330,9 @@ public class Command extends MDEvent implements ScriptLineHandler
 			this.name = name;
 			this.type = type;
 		}
-		
+
+        // TODO(esu): Review this deprecation.
+		@SuppressWarnings("deprecation")
 		public static Argument get(String string)
 		{
 			if (string.startsWith("&"))

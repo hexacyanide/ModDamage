@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
 
 import com.moddamage.MDEvent;
 import com.moddamage.ModDamage;
@@ -27,9 +26,11 @@ public class Chat extends MDEvent implements Listener
 	
 	// About deprecation: MD does a lot of things that will require synchronous 
 	// behavior. The Async event would be way to much work to impliment
-	
+
 	@EventHandler(priority=EventPriority.HIGHEST)
-	public void onChat(PlayerChatEvent event)
+	@SuppressWarnings("deprecation")
+	// TODO(esu): Review this deprecation.
+	public void onChat(org.bukkit.event.player.PlayerChatEvent event)
 	{
 		if(!ModDamage.isEnabled) return;
 		

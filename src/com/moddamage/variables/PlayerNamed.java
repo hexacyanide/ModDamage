@@ -45,6 +45,8 @@ public class PlayerNamed implements IDataProvider<OfflinePlayer>
 	}
 	
 	@Override
+    @SuppressWarnings("deprecation")
+    // TODO(esu): Review this deprecation.
 	public OfflinePlayer get(EventData data) throws BailException
     {
         return Bukkit.getOfflinePlayer(name.get(data));

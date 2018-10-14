@@ -22,6 +22,8 @@ public class PlayerNamedFunction implements IDataProvider<OfflinePlayer>
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
+	// TODO(esu): Review this deprecation.
 	public OfflinePlayer get(EventData data) throws BailException
 	{
 		String name = nameDP.get(data);
