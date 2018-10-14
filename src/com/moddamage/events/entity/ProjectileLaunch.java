@@ -29,7 +29,7 @@ public class ProjectileLaunch extends MDEvent implements Listener
 	{
 		if(!ModDamage.isEnabled) return;
 		
-		Projectile projectile = (Projectile)event.getEntity();
+		Projectile projectile = event.getEntity();
 		ProjectileSource shooter = projectile.getShooter();
 		
 		EventData data = myInfo.makeData(
