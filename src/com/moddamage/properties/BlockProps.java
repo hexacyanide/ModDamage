@@ -29,7 +29,7 @@ public class BlockProps
 		Properties.register("light", Block.class, "getLightLevel");
 		Properties.register("blocklight", Block.class, "getLightFromBlocks");
 		Properties.register("skylight", Block.class, "getLightFromSky");
-        Properties.register("type",	Block.class, "getType");
+        Properties.register("type",	Block.class, "getType", "setType");
 
 		// TODO(esu): Write suitable replacements for these.
 		// Properties.register("typeid", Block.class, "getTypeId", "setTypeId");

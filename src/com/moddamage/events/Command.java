@@ -278,7 +278,7 @@ public class Command extends MDEvent implements ScriptLineHandler
 			args[0] = commandLabel;
 			boolean success = CommandEventHandler.handleCommand(sender, args);
 			if (!success) 
-		        sender.sendMessage("Unknown command. Type \"help\" for help.");
+		        sender.sendMessage("Unknown command. Type /\"help\" for help.");
 			return success;
 		}
 	}
