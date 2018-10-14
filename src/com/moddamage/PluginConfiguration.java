@@ -350,6 +350,7 @@ public class PluginConfiguration implements ScriptLineHandler
 
 		changeIndentation(false);
 
+		// TODO(esu): Fix loading status reporting.
 		switch(LoadState.pluginState)
 		{
 			case NOT_LOADED:

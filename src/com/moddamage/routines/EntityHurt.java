@@ -35,7 +35,7 @@ public class EntityHurt extends Routine
 	@Override
 	public void run(EventData data) throws BailException
 	{
-		final LivingEntity target = (LivingEntity) livingDP.get(data);
+		final LivingEntity target = livingDP.get(data);
 		final Entity from = entityOtherDP.get(data);
 		if(from != null && target != null && target.getHealth() > 0 && !target.isDead())
 		{

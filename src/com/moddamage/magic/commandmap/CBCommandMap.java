@@ -33,11 +33,12 @@ public class CBCommandMap implements IMagicCommandMap
 		Server server = Bukkit.getServer();
 		return (SimpleCommandMap) MagicStuff.safeInvoke(server, CraftServer_getCommandMap);
 	}
-	
+
+	// As per CraftCommandMap.java.
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Command> getKnownCommandsRawMap() {
 		SimpleCommandMap map = getCommandMap();
-		
 		return (Map<String, Command>) MagicStuff.safeGet(map, SimpleCommandMap_knownCommands);
 	}
 }
