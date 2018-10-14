@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.*;
-import org.bukkit.entity.Skeleton.SkeletonType;
 
 import com.moddamage.ModDamage;
 
@@ -99,17 +99,16 @@ public enum EntityType implements Matchable<EntityType>
 				MAGMA_CUBE(MOB, org.bukkit.entity.EntityType.MAGMA_CUBE, MagmaCube.class),
 				MUSHROOM_COW(MOB, org.bukkit.entity.EntityType.MUSHROOM_COW, MushroomCow.class),
 				SILVERFISH(MOB, org.bukkit.entity.EntityType.SILVERFISH, Silverfish.class),
+
+                // TODO(esu): Review enum names for affix consistency.
 				SKELETON(MOB, org.bukkit.entity.EntityType.SKELETON, Skeleton.class)
 				{
 					@Override
 					protected EntityType getMostSpecificType(Object obj)
 					{
-						switch(((Skeleton)obj).getSkeletonType())
-						{
-							case NORMAL: 	return NORMAL_SKELETON;
-							case WITHER: 	return WITHER_SKELETON;
-							default:		return SKELETON;
-						}
+					    if (obj instanceof Stray) return STRAY_SKELETON;
+					    if (obj instanceof WitherSkeleton) return WITHER_SKELETON;
+					    return NORMAL_SKELETON;
 					}
 				},
 	            	NORMAL_SKELETON(SKELETON, org.bukkit.entity.EntityType.SKELETON)
@@ -117,19 +116,26 @@ public enum EntityType implements Matchable<EntityType>
 						@Override
 						public LivingEntity spawn(Location location)
 						{
-							Skeleton skeleton = ((Skeleton)location.getWorld().spawnEntity(location, this.getCreatureType()));
-							skeleton.setSkeletonType(SkeletonType.NORMAL);
-							return skeleton;
+                            Entity entity = location.getWorld().spawnEntity(location, this.getCreatureType());
+                            return (Skeleton) entity;
 						}
 					},
-                	WITHER_SKELETON(SKELETON, org.bukkit.entity.EntityType.SKELETON)
+                    STRAY_SKELETON(SKELETON, org.bukkit.entity.EntityType.STRAY)
+                    {
+                        @Override
+                        public LivingEntity spawn(Location location)
+                        {
+                            Entity entity = location.getWorld().spawnEntity(location, this.getCreatureType());
+                            return (Stray) entity;
+                        }
+                    },
+                	WITHER_SKELETON(SKELETON, org.bukkit.entity.EntityType.WITHER_SKELETON)
 					{
 						@Override
 						public LivingEntity spawn(Location location)
 						{
-							Skeleton skeleton = ((Skeleton)location.getWorld().spawnEntity(location, this.getCreatureType()));
-							skeleton.setSkeletonType(SkeletonType.WITHER);
-							return skeleton;
+                            Entity entity = location.getWorld().spawnEntity(location, this.getCreatureType());
+                            return (WitherSkeleton) entity;
 						}
 					},
 				SLIME(MOB, org.bukkit.entity.EntityType.SLIME, Slime.class)
@@ -202,7 +208,8 @@ public enum EntityType implements Matchable<EntityType>
 					@Override
 					protected EntityType getMostSpecificType(Object obj)
 					{
-						if(((Spider)obj).getPassenger() != null) return SPIDER_JOCKEY;
+					    Spider spider = (Spider) obj;
+					    if (spider.getPassengers().isEmpty()) return SPIDER_JOCKEY;
 						return SPIDER_RIDERLESS;
 					}
 				},
@@ -211,8 +218,11 @@ public enum EntityType implements Matchable<EntityType>
 						@Override
 						public LivingEntity spawn(Location location)
 						{
-							LivingEntity spider = (LivingEntity) location.getWorld().spawnEntity(location, this.getCreatureType());
-							spider.setPassenger(location.getWorld().spawnEntity(location, org.bukkit.entity.EntityType.SKELETON));
+						    World world = location.getWorld();
+
+						    Entity entity = world.spawnEntity(location, this.getCreatureType());
+							Spider spider = (Spider) entity;
+							spider.addPassenger(world.spawnEntity(location, org.bukkit.entity.EntityType.SKELETON));
 							return spider;
 						}
 					},
