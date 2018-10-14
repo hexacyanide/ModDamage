@@ -1,6 +1,7 @@
 package com.moddamage.events.item;
 
 import org.bukkit.World;
+import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,21 +36,21 @@ public class PrepareEnchant extends MDEvent implements Listener
 		
 		Player player = event.getEnchanter();
 		Integer bonus = event.getEnchantmentBonus();
-		int[] levels = event.getExpLevelCostsOffered();
+		EnchantmentOffer[] levels = event.getOffers();
 		EventData data = myInfo.makeData(
 				player,
 				player.getWorld(),
 				new ItemHolder(event.getItem()),
 				bonus,
-				levels[0], levels[1], levels[2],
+				levels[0].getCost(), levels[1].getCost(), levels[2].getCost(),
 				event.isCancelled()
 				);
 		
 		runRoutines(data);
 		
-		levels[0] = data.get(Integer.class, data.start + 4);
-		levels[1] = data.get(Integer.class, data.start + 5);
-		levels[2] = data.get(Integer.class, data.start + 6);
+		levels[0].setCost(data.get(Integer.class, data.start + 4));
+		levels[1].setCost(data.get(Integer.class, data.start + 5));
+		levels[2].setCost(data.get(Integer.class, data.start + 6));
 		
 		event.setCancelled(data.get(Boolean.class, data.start + data.objects.length - 1));
 	}

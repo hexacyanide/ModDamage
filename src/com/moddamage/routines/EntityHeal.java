@@ -3,6 +3,8 @@ package com.moddamage.routines;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
 
 import com.moddamage.LogUtil;
@@ -33,8 +35,11 @@ public class EntityHeal extends Routine
 		
 		LivingEntity entity = livingDP.get(data);
 		if (entity == null) return;
-		
-		entity.setHealth(Math.min(entity.getHealth() + ha.doubleValue(), entity.getMaxHealth()));
+
+		AttributeInstance attr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+		// TODO(esu): Review for side effects/wrong value.
+		double maxHealth = attr.getValue();
+		entity.setHealth(Math.min(entity.getHealth() + ha.doubleValue(), maxHealth));
 	}
 
 	public static void register()

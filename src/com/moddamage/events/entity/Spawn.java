@@ -1,6 +1,8 @@
 package com.moddamage.events.entity;
 
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -35,10 +37,13 @@ public class Spawn extends MDEvent implements Listener
 		if(!ModDamage.isEnabled) return;
 		
 		Player player = event.getPlayer();
+        AttributeInstance attr = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        double maxHealth = attr.getValue();
+
 		EventData data = myInfo.makeData(
 				player, // entity
 				player.getWorld(),
-				player.getMaxHealth(),
+                maxHealth,  // TODO(esu): Review for side effects.
 				null,
 				null
 				);
@@ -67,8 +72,12 @@ public class Spawn extends MDEvent implements Listener
 		
 		double health = data.get(Double.class, data.start + 2);
 		
-		if (health > 0)
-			entity.setHealth(Math.min(health, entity.getMaxHealth()));
+		if (health > 0) {
+            AttributeInstance attr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            // TODO(esu): Review for side effects/wrong value.
+            double maxHealth = attr.getValue();
+			entity.setHealth(Math.min(health, maxHealth));
+		}
 		else
 			event.setCancelled(true);
 		
