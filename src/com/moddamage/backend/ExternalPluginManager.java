@@ -29,7 +29,10 @@ import com.palmergames.bukkit.towny.db.TownyDataSource;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyUniverse;
 import com.platymuus.bukkit.permissions.PermissionsPlugin;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.internal.platform.WorldGuardPlatform;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.bananaco.permissions.Permissions;
 import net.sacredlabyrinth.phaed.simpleclans.ClanPlayer;
 import net.sacredlabyrinth.phaed.simpleclans.SimpleClans;
@@ -45,11 +48,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import ru.tehkode.permissions.PermissionManager;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.sk89q.worldguard.bukkit.BukkitUtil.toVector;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ExternalPluginManager
 {
@@ -359,32 +359,47 @@ public class ExternalPluginManager
 		},
 		WorldGuard
 		{
-			private WorldGuardPlugin worldGuardPlugin = null;
+			private com.sk89q.worldguard.WorldGuard worldGuardInstance = null;
 
 			@Override
-			public List<String> getRegions(Location location)
-			{
-				com.sk89q.worldguard.protection.managers.RegionManager rm = worldGuardPlugin.getRegionManager(location.getWorld());
+			public List<String> getRegions(Location location) {
+				WorldGuardPlatform platform = this.worldGuardInstance.getPlatform();
+
+				// Wrap the relevant world object, and then obtain a handle to the region manager.
+				World world = location.getWorld();
+				com.sk89q.worldedit.world.World wrappedWorld = BukkitAdapter.adapt(world);
+
+				com.sk89q.worldguard.protection.managers.RegionManager rm = (
+						platform.getRegionContainer()
+								.get(wrappedWorld));
+
+				// If there's no region manager for the world, return an empty list.
 				if (rm == null) return Arrays.asList();
-				return rm.getApplicableRegionsIDs(toVector(location));
+
+				Vector vec = BukkitAdapter.asVector(location);
+				return rm.getApplicableRegionsIDs(vec);
 			}
 
 			@Override
-			public List<String> getAllRegions()
-			{
-				List<String> regions = new ArrayList<String>();
-				for(World world : Bukkit.getWorlds()) {
-					com.sk89q.worldguard.protection.managers.RegionManager rm = worldGuardPlugin.getRegionManager(world);
-					if (rm == null) return Arrays.asList();
-					regions.addAll(rm.getRegions().keySet());
-				}
+			public List<String> getAllRegions() {
+				WorldGuardPlatform platform = this.worldGuardInstance.getPlatform();
+				RegionContainer rc = platform.getRegionContainer();
+
+				List<String> regions = Bukkit.getWorlds().stream()
+						.map(world -> BukkitAdapter.adapt(world))   // Convert to wrapped World object.
+						.map(wrappedWorld -> rc.get(wrappedWorld))  // Fetch RegionManager per world.
+						.filter(Objects::nonNull)                   // Filter worlds that have no manager.
+						.map(rm -> rm.getRegions().keySet())        // Obtain Set<String> of names from each.
+						.flatMap(Set::stream)                       // Flatten stream of sets.
+						.collect(Collectors.toList());              // Convert to list.
+
 				return regions;
 			}
 
 			@Override
-			protected void reload(Plugin plugin)
-			{
-				worldGuardPlugin = ((WorldGuardPlugin)plugin);
+			protected void reload(Plugin plugin) {
+				// This is a singleton, so it's not really a reload, but it will suffice.
+				this.worldGuardInstance = com.sk89q.worldguard.WorldGuard.getInstance();
 			}
 		},
 		Towny
