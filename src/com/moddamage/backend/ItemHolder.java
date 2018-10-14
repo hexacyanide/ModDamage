@@ -3,7 +3,9 @@ package com.moddamage.backend;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -190,9 +192,12 @@ public class ItemHolder {
 
     	SkullMeta smeta = (SkullMeta) meta;
 
-    	return smeta.getOwner();
+    	// TODO(esu): Review the return type of this method.
+    	return smeta.getOwningPlayer().toString();
     }
 
+    // TODO(esu): Review usage and input types.
+    @SuppressWarnings("deprecated")
     public void setOwner(String name) {
     	if (item == null) return;
     	ItemMeta meta = item.getItemMeta();
@@ -200,7 +205,10 @@ public class ItemHolder {
 
     	SkullMeta smeta = (SkullMeta) meta;
 
-    	smeta.setOwner(name);
+    	OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+    	if (player == null) return;
+
+    	smeta.setOwningPlayer(player);
     	item.setItemMeta(smeta);
 
     	save();
