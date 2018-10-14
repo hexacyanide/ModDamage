@@ -36,7 +36,8 @@ public class BlockForm extends MDEvent implements Listener
                 event.getBlock().getWorld(),
 				event.getBlock(),
                 event.getNewState().getType(),
-                event.getNewState().getTypeId(),
+                // TODO(esu): Fix use of deprecated magic number.
+                event.getNewState().getType().getId(),
                 (int) event.getNewState().getData().getData(),
 				event.isCancelled());
 

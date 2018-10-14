@@ -23,7 +23,8 @@ public class EntityStatus extends Conditional<Entity>
 {
 	public static final Pattern pattern = Pattern.compile("\\.is("+ Utils.joinBy("|", StatusType.values()) +")", Pattern.CASE_INSENSITIVE);
 	protected static final double magic_MinFallSpeed = 0.1d;
-	private static final List<Material> waterList = Arrays.asList(Material.WATER, Material.STATIONARY_WATER);
+	// TODO(esu): Fix use of deprecated material.
+	private static final List<Material> waterList = Arrays.asList(Material.WATER, Material.LEGACY_STATIONARY_WATER);
 
 	private enum StatusType
 	{

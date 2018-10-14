@@ -43,15 +43,19 @@ public class ItemHolder {
     }
 
     @SuppressWarnings("deprecation")
+    // TODO(esu): Remove use of deprecated materials API.
     public int getTypeId() {
     	if (item == null) return 0;
-    	else return item.getTypeId();
+    	else return item.getType().getId();
     }
 
     @SuppressWarnings("deprecation")
     public void setTypeId(int type) {
-    	if (item == null) item = new ItemStack(type);
-    	else item.setTypeId(type);
+        // TODO(esu): Fix this for high potential of problems (like OOB).
+        Material[] materials = Material.values();
+        Material material = materials[type];
+    	if (item == null) item = new ItemStack(material);
+    	else item.setType(material);
 
     	save();
     }

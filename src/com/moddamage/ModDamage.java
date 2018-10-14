@@ -362,15 +362,16 @@ public class ModDamage extends JavaPlugin
 
 	public static PluginConfiguration getPluginConfiguration(){ return configuration; }
 
+	// TODO(esu): Remove deprecated materials for versions past 1.13.
 	public static final HashSet<Material> goThroughThese = new HashSet<Material>(Arrays.asList(
 			Material.AIR,
 			Material.GLASS,
 			Material.LADDER,
 			Material.TORCH,
-			Material.REDSTONE_TORCH_ON,
-			Material.REDSTONE_TORCH_OFF,
+			Material.LEGACY_REDSTONE_TORCH_ON,
+			Material.LEGACY_REDSTONE_TORCH_OFF,
 			Material.STONE_BUTTON,
-			Material.SIGN_POST,
+			Material.LEGACY_SIGN_POST,
 			Material.WALL_SIGN,
 			Material.FIRE,
 			Material.LEVER));

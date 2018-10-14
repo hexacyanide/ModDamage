@@ -23,7 +23,10 @@ public class MaterialAliaser extends CollectionAliaser<Material>
 
 			try
 			{
-				return Material.getMaterial(Integer.parseInt(num));
+				int idx = Integer.parseInt(num);
+				// TODO(esu): Fix this for high potential of problems (like OOB).
+				Material[] materials = Material.values();
+				return materials[idx];
 			}
 			catch (NumberFormatException e)
 			{

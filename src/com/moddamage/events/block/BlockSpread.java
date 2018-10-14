@@ -38,7 +38,8 @@ public class BlockSpread extends MDEvent implements Listener
                 event.getSource(),
 				event.getBlock(),
                 event.getNewState().getType(),
-                event.getNewState().getTypeId(),
+                // TODO(esu): Fix use of magic number.
+                event.getNewState().getType().getId(),
                 (int) event.getNewState().getData().getData(),
 				event.isCancelled());
 
