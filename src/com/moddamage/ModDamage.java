@@ -69,16 +69,6 @@ public class ModDamage extends JavaPlugin
 		}
 		MagicStuff.init();
 		reload(true);
-		
-		try
-		{
-		    Metrics metrics = new Metrics(this);
-		    metrics.start();
-		} 
-		catch (IOException e) 
-		{
-		    // Failed to submit the stats :-(
-		}
 	}
 
 	@Override
