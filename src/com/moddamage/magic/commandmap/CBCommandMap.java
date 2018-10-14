@@ -21,8 +21,10 @@ public class CBCommandMap implements IMagicCommandMap
 		Server server = Bukkit.getServer(); // org.bukkit.craftbukkit.CraftServer
 
 		CraftServer_getCommandMap = MagicStuff.safeGetMethod(server.getClass(), "getCommandMap");
-		
-		SimpleCommandMap_knownCommands = MagicStuff.safeGetField(MagicStuff.safeInvoke(server, CraftServer_getCommandMap).getClass(), "knownCommands");
+
+		SimpleCommandMap_knownCommands = MagicStuff.safeGetField(
+				MagicStuff.safeInvoke(server, CraftServer_getCommandMap).getClass().getSuperclass(),
+				"knownCommands");
 	}
 
 	@Override
