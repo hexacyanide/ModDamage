@@ -30,8 +30,10 @@ public class BlockProps
 		Properties.register("blocklight", Block.class, "getLightFromBlocks");
 		Properties.register("skylight", Block.class, "getLightFromSky");
         Properties.register("type",	Block.class, "getType");
-		Properties.register("typeid", Block.class, "getTypeId", "setTypeId");
-		Properties.register("data", Block.class, "getData", "setData");
+
+		// TODO(esu): Write suitable replacements for these.
+		// Properties.register("typeid", Block.class, "getTypeId", "setTypeId");
+		// Properties.register("data", Block.class, "getData", "setData");
 		
 		DataProvider.registerTransformer(Block.class, "getState");
 		DataProvider.registerTransformer(Sign.class, BlockState.class);

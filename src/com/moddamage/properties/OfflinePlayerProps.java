@@ -11,12 +11,14 @@ public class OfflinePlayerProps
 	{
 		Properties.register("name", OfflinePlayer.class, "getName");
 		Properties.register("isOnline", OfflinePlayer.class, "isOnline");
-		Properties.register("isBanned", OfflinePlayer.class, "isBanned", "setBanned");
+		Properties.register("isBanned", OfflinePlayer.class, "isBanned");
 		Properties.register("isWhitelisted", OfflinePlayer.class, "isWhitelisted", "setWhitelisted");
-		Properties.register("isOp", OfflinePlayer.class, "isOp", "setOp");
 		Properties.register("hasPlayedBefore", OfflinePlayer.class, "hasPlayedBefore");
 		Properties.register("firstPlayed", OfflinePlayer.class, "getFirstPlayed");
 		Properties.register("lastPlayed", OfflinePlayer.class, "getLastPlayed");
+
+		// Inherited from ServerOperator.
+		Properties.register("isOp", OfflinePlayer.class, "isOp", "setOp");
 		
         DataProvider.registerTransformer(OfflinePlayer.class, "getPlayer");
 	}
