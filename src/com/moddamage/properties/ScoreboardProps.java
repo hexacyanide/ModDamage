@@ -70,7 +70,7 @@ public class ScoreboardProps
 								
 								OfflinePlayer player = playerDP.get(data);
 								
-								return sb.getPlayerTeam(player);
+								return sb.getEntryTeam(player.getName());
 							}
 							
 							@Override
@@ -83,12 +83,12 @@ public class ScoreboardProps
 								
 								if (team == null)
 								{
-									team = sb.getPlayerTeam(player);
+									team = sb.getEntryTeam(player.getName());
 									if (team != null)
-										team.removePlayer(player);
+										team.removeEntry(player.getName());
 								}
 								else
-									team.addPlayer(player);
+									team.addEntry(player.getName());
 							}
 							
 							public Class<? extends Team> provides() {  return Team.class;  }
@@ -195,7 +195,7 @@ public class ScoreboardProps
 							if (objective == null)
 								objective = sb.registerNewObjective(name, "dummy");
 							
-							return objective.getScore(player).getScore();
+							return objective.getScore(player.getName()).getScore();
 						}
 						
 						public Class<? extends Integer> provides() {  return Integer.class;  }
@@ -216,7 +216,7 @@ public class ScoreboardProps
 							if (objective == null)
 								objective = sb.registerNewObjective(name, "dummy");
 							
-							objective.getScore(player).setScore(value);
+							objective.getScore(player.getName()).setScore(value);
 						}
 
 						@Override
