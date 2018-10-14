@@ -65,7 +65,7 @@ public class EnumEquals extends Conditional<Enum>
 				public IDataProvider<Boolean> parse(EventInfo info, IDataProvider<Enum> enumDP, Matcher m, StringMatcher sm)
 				{
 					@SuppressWarnings("unchecked")
-					Map<String, Enum<?>> possibleTypes = Utils.getTypeMapForEnum(enumDP.provides(), true);
+					Map<String, ? extends Enum<?>> possibleTypes = Utils.getTypeMapForEnum(enumDP.provides(), true);
 					
 					List<Enum> types = new ArrayList<Enum>();
 					
