@@ -9,25 +9,34 @@ import com.moddamage.parsing.property.SettableProperty;
 
 public class EquipmentProps
 {
+    // TODO(esu): Review dual wielding methods after change.
 	public static void register()
 	{
 		Properties.register(new SettableProperty<ItemHolder, EntityEquipment>("held", ItemHolder.class, EntityEquipment.class) {
-			public void set(EntityEquipment equipment, EventData data, ItemHolder holder) { equipment.setItemInHand(holder == null? null : holder.getItem()); }
+			public void set(EntityEquipment equipment, EventData data, ItemHolder holder) {
+			    equipment.setItemInMainHand(holder == null ? null : holder.getItem());
+			}
 
 			public ItemHolder get(final EntityEquipment equipment, EventData data) {
-				return new ItemHolder(equipment.getItemInHand()) {
-					public void save() { equipment.setItemInHand(getItem()); }
+				return new ItemHolder(equipment.getItemInMainHand()) {
+					public void save() {
+					    equipment.setItemInMainHand(getItem());
+					}
 				};
 			}
 		});
 		Properties.register("held_dropchance", EntityEquipment.class, "getItemInHandDropChance", "setItemInHandDropChance");
     
 	    Properties.register(new SettableProperty<ItemHolder, EntityEquipment>("wielded", ItemHolder.class, EntityEquipment.class) {
-				public void set(EntityEquipment equipment, EventData data, ItemHolder holder) { equipment.setItemInHand(holder == null? null : holder.getItem()); }
+				public void set(EntityEquipment equipment, EventData data, ItemHolder holder) {
+				    equipment.setItemInMainHand(holder == null ? null : holder.getItem());
+				}
 	
 				public ItemHolder get(final EntityEquipment equipment, EventData data) {
-					return new ItemHolder(equipment.getItemInHand()) {
-						public void save() { equipment.setItemInHand(getItem()); }
+					return new ItemHolder(equipment.getItemInMainHand()) {
+						public void save() {
+						    equipment.setItemInMainHand(getItem());
+						}
 					};
 				}
 			});
